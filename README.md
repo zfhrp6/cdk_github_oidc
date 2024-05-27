@@ -1,6 +1,10 @@
 # Create AWS-GitHub OIDC Role by AWS CDK
 
-## Usage
+## how to define roles
+
+see env.ts
+
+## how to deploy
 
 ```
 npm ci
