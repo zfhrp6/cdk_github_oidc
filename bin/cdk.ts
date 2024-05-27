@@ -2,10 +2,11 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { GitHubOidcStack } from '../lib/cdk-stack';
+import { config } from '../env';
 
 const app = new cdk.App();
 
-new GitHubOidcStack(app, 'GitHubOidcStack', {});
+new GitHubOidcStack(app, 'GitHubOidcStack', config);
 
 const tags = {
   CreatedBy: 'AWS CDK',

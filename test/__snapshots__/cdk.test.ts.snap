@@ -95,7 +95,56 @@ exports[`STack snapshot test 1`] = `
       "Type": "Custom::AWSCDKOpenIdConnectProvider",
       "UpdateReplacePolicy": "Delete",
     },
-    "githuboidcroleA4F9D0F1": {
+    "githuboidcroletestrolename1policy2D2102C2": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                  "token.actions.githubusercontent.com:sub": [
+                    "repo:github-user/example-repository:example-oidc-branch-1",
+                  ],
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": {
+                  "Ref": "Provider2281708E",
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "RoleName": "test-role-name-1-policy",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "githuboidcroletestrolename1policyDefaultPolicyC883E853": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "test:TestAwsActionName",
+              "Effect": "Allow",
+              "Resource": "testResource",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "githuboidcroletestrolename1policyDefaultPolicyC883E853",
+        "Roles": [
+          {
+            "Ref": "githuboidcroletestrolename1policy2D2102C2",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "githuboidcroletestrolename2managedPolicyA31862DA": {
       "Properties": {
         "AssumeRolePolicyDocument": {
           "Statement": [
@@ -106,7 +155,11 @@ exports[`STack snapshot test 1`] = `
                   "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
                 },
                 "StringLike": {
-                  "token.actions.githubusercontent.com:sub": [],
+                  "token.actions.githubusercontent.com:sub": [
+                    [
+                      "repo:github-user/example-repository:*",
+                    ],
+                  ],
                 },
               },
               "Effect": "Allow",
@@ -133,26 +186,72 @@ exports[`STack snapshot test 1`] = `
             ],
           },
         ],
-        "RoleName": "github-oidc-role",
+        "RoleName": "test-role-name-2-managedPolicy",
       },
       "Type": "AWS::IAM::Role",
     },
-    "githuboidcroleDefaultPolicy08F57751": {
+    "githuboidcroletestrolename3policyandmanagedPolicy98540753": {
       "Properties": {
-        "PolicyDocument": {
+        "AssumeRolePolicyDocument": {
           "Statement": [
             {
-              "Action": "sts:GetCallerIdentity",
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                },
+                "StringLike": {
+                  "token.actions.githubusercontent.com:sub": [
+                    [
+                      "repo:github-user/example-repository:*",
+                    ],
+                  ],
+                },
+              },
               "Effect": "Allow",
-              "Resource": "*",
+              "Principal": {
+                "Federated": {
+                  "Ref": "Provider2281708E",
+                },
+              },
             },
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "githuboidcroleDefaultPolicy08F57751",
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AWSIoTEventsReadOnlyAccess",
+              ],
+            ],
+          },
+        ],
+        "RoleName": "test-role-name-3-policy-and-managedPolicy",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "githuboidcroletestrolename3policyandmanagedPolicyDefaultPolicyDA5A5874": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "test:TestAwsActionName2",
+              "Effect": "Allow",
+              "Resource": "arn:aws:iam::123456789012:resource/test-resource-name",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "githuboidcroletestrolename3policyandmanagedPolicyDefaultPolicyDA5A5874",
         "Roles": [
           {
-            "Ref": "githuboidcroleA4F9D0F1",
+            "Ref": "githuboidcroletestrolename3policyandmanagedPolicy98540753",
           },
         ],
       },
